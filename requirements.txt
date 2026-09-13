@@ -1,5 +1,8 @@
-# Ядро пайплайна. torch и torchaudio ставь первым — под свою CUDA,
-# иначе omnivoice притянет процессорную сборку:
+# Для установки обычным pip. Через uv ставить не это, а pyproject.toml:
+#   uv sync --extra gui
+#
+# Ядро пайплайна. Колёса torch на PyPI идут уже с CUDA; конкретную версию
+# CUDA можно прибить своим индексом:
 #   py -m pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu124
 torch
 torchaudio

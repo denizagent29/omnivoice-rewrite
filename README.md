@@ -16,18 +16,27 @@
 
 ## Установка
 
-Windows, PowerShell (одной строкой):
+uv — быстрее и не пачкает систему, всё живёт в `.venv` рядом с репозиторием:
 
-    py -m pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu124
+    uv sync --extra gui
+
+Без окна, только пайплайн:
+
+    uv sync
+
+Дальше команды запускаются через `uv run`, либо просто активируй окружение.
+
+Обычным pip — то же самое, только медленнее:
 
     py -m pip install -r requirements.txt
 
-Linux или macOS — то же самое, только `python3 -m pip` вместо `py -m pip`.
-Для видеокарт NVIDIA подставь свою версию CUDA в ссылку (`cu124`, `cu128`).
+На Linux и macOS `python3 -m pip` вместо `py -m pip`. Колёса torch на PyPI
+идут уже с CUDA, отдельный индекс нужен, только чтобы прибить конкретную
+версию CUDA — как это сделать, написано в `pyproject.toml`.
 
 Проверка, что всё встало:
 
-    python rewrite.py --help
+    uv run omnivoice-rewrite --help
 
 ## Настройка ключа
 
@@ -49,31 +58,36 @@ Linux или macOS:
 
 Всё сразу:
 
-    python rewrite.py run --audio story.ogg --instruction "перепиши как полную противоположность" --out result.wav
+    uv run omnivoice-rewrite run --audio story.ogg --instruction "перепиши как полную противоположность" --out result.wav
 
 По шагам:
 
-    python rewrite.py transcribe --audio story.ogg --json story.json
+    uv run omnivoice-rewrite transcribe --audio story.ogg --json story.json
 
-    python rewrite.py edit --text "вставь сюда расшифровку" --instruction "перепиши как полную противоположность"
+    uv run omnivoice-rewrite edit --text "вставь сюда расшифровку" --instruction "перепиши как полную противоположность"
 
-    python rewrite.py say --text "перепиши как полную противоположность" --ref story.ogg --out result.wav
+    uv run omnivoice-rewrite say --text "перепиши как полную противоположность" --ref story.ogg --out result.wav
 
 Проверить без видеокарты (только расшифровка и правка):
 
-    python rewrite.py run --audio story.ogg --instruction "перепиши как полную противоположность" --dry-run
+    uv run omnivoice-rewrite run --audio story.ogg --instruction "перепиши как полную противоположность" --dry-run
 
 Услышать результат без видеокарты, бесплатным синтетическим голосом
 (клонирования не будет — это просто проверка, что текст звучит):
 
-    python rewrite.py run --audio story.ogg --instruction "перепиши как полную противоположность" --engine edge --out result.wav
+    uv run omnivoice-rewrite run --audio story.ogg --instruction "перепиши как полную противоположность" --engine edge --out result.wav
+
+Если ставил через pip, вместо `uv run omnivoice-rewrite` пиши
+`python rewrite.py` — команды те же.
 
 ## Окно
 
 Кому удобнее мышкой и с горячими клавишами — есть графический интерфейс на
-wxPython: `python gui.py`. Там весь OmniVoice целиком, а не только пайплайн.
+wxPython. Там весь OmniVoice целиком, а не только пайплайн.
 
-    py -m pip install wxpython
+    uv sync --extra gui
+
+    uv run omnivoice-rewrite-gui
 
 Пять вкладок: **Переписка** (запись → расшифровка → правка → синтез одним
 нажатием), **Синтез** (три режима: клонирование по образцу, дизайн голоса по

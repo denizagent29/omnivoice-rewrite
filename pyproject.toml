@@ -1,0 +1,46 @@
+[project]
+name = "omnivoice-rewrite"
+version = "0.1.0"
+description = "Голосовое сообщение → расшифровка → правка текста у LLM → синтез тем же голосом (OmniVoice)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = [
+    "torch",
+    "torchaudio",
+    "omnivoice",
+    "faster-whisper",
+    "numpy",
+]
+
+[project.optional-dependencies]
+# uv sync --extra gui
+gui = ["wxpython"]
+# запасной синтез без видеокарты вместо клонирования
+edge = ["edge-tts"]
+# озвучивание событий интерфейса скринридером отдельно от NVDA
+speech = ["accessible_output3"]
+
+[project.scripts]
+omnivoice-rewrite = "rewrite:main"
+omnivoice-rewrite-gui = "gui:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+py-modules = ["rewrite", "gui"]
+
+[tool.uv]
+# Колёса torch на PyPI — это уже сборка с CUDA (на Windows и Linux).
+# Нужна конкретная версия CUDA — раскомментируй блок ниже: он берёт torch
+# и torchaudio с сайта PyTorch, остальное остаётся на PyPI.
+# [[tool.uv.index]]
+# name = "pytorch"
+# url = "https://download.pytorch.org/whl/cu124"
+# explicit = true
+#
+# [tool.uv.sources]
+# torch = { index = "pytorch" }
+# torchaudio = { index = "pytorch" }
