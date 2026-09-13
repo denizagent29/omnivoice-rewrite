@@ -1,0 +1,17 @@
+# Ядро пайплайна. torch и torchaudio ставь первым — под свою CUDA,
+# иначе omnivoice притянет процессорную сборку:
+#   py -m pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu124
+torch
+torchaudio
+omnivoice
+faster-whisper
+numpy
+
+# Графический интерфейс (необязательно; gui.py без него не запустится)
+wxpython
+
+# Запасной синтез без видеокарты вместо клонирования (--engine edge)
+edge-tts
+
+# Озвучивание событий интерфейса скринридером, если нужно отдельно от NVDA
+accessible_output3
